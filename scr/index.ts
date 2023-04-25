@@ -7,6 +7,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 import { properties } from './properties';
+import router from './router';
 
 const app = express();
 
@@ -27,5 +28,7 @@ server.listen(8080, () => {
 mongoose.Promise = Promise;
 mongoose.connect(properties.mongo_url);
 mongoose.connection.on('error', (error: Error) => console.log(error));
+
+app.use('/', router())
 
 //https://www.youtube.com/watch?v=b8ZUb_Okxro

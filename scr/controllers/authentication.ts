@@ -26,6 +26,9 @@ export const login = async (req: express.Request, res: express.Response) => {
 
         await user.save()
 
+        console.log("test")
+        console.log(user)
+
         res.cookie('PROD-APP-AUTH', user.authentication.sessionToken, {domain: 'localhost', path: '/' })
 
         return res.status(200).json(user).end()

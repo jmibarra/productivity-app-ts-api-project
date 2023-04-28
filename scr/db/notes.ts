@@ -9,3 +9,11 @@ const NotesSchema = new mongoose.Schema({
 })
 
 export const NotesModel = mongoose.model('Note', NotesSchema);
+
+export const getNotes = () => NotesModel.find();
+//Tengo que armar uno para traer solo las notas de mi usuario.
+
+export const getNoteById = (id: string) => NotesModel.findById(id);
+export const createNote = (values: Record<string, any>) => new NotesModel(values).save().then((note) => note.toObject());
+export const deleteNoteById = (id: String) => NotesModel.findOneAndDelete({_id: id});
+export const updateNoteById = ((id: String, values: Record<string, any>) => NotesModel.findByIdAndUpdate(id, values));

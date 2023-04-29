@@ -7,6 +7,10 @@ export const login = async (req: express.Request, res: express.Response) => {
     try{
         const {email, password} = req.body;
 
+        console.log("llega el request")
+        console.log(email)
+        console.log(password)
+
         if(!email || !password)
             return res.sendStatus(400);
 

@@ -87,6 +87,8 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
       }
   
       const note = await getNoteById(id);
+
+      // Fecha de actualización
       
       if(note){
           note.title = title;

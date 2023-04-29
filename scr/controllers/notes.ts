@@ -1,5 +1,5 @@
 import express from 'express';
-import { createNote, deleteNoteById, getNoteById, getNotes } from '../db/notes';
+import { createNote, deleteNoteById, getNoteById, getNotesByCreator } from '../db/notes';
 import { getUserBySessionToken } from '../db/users';
 
 export const createNewNote = async (req: express.Request, res: express.Response) => {
@@ -39,8 +39,26 @@ export const createNewNote = async (req: express.Request, res: express.Response)
 
 export const getAllNotes = async (req: express.Request, res: express.Response) => {
     try {
-        const notes = await getNotes();
-        return res.status(200).json(notes);
+
+        const sessionToken = req.cookies['PROD-APP-AUTH'];
+
+        const creatorUser = await getUserBySessionToken(sessionToken);
+
+        let creator = ""
+
+        if(!creatorUser)
+            return res.sendStatus(400);
+
+        creator = creatorUser._id.toString()
+        const notes = await getNotesByCreator(creator);
+
+        const responseData = {
+            notes: notes,
+            count: notes.length
+        }
+        
+        return res.status(200).json(responseData);
+
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);

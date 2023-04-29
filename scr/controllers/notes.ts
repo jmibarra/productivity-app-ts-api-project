@@ -1,5 +1,41 @@
 import express from 'express';
-import { deleteNoteById, getNoteById, getNotes } from '../db/notes';
+import { createNote, deleteNoteById, getNoteById, getNotes } from '../db/notes';
+import { getUserBySessionToken } from '../db/users';
+
+export const createNewNote = async (req: express.Request, res: express.Response) => {
+    try{
+        const { title, content, favorite, color } = req.body;
+
+        const sessionToken = req.cookies['PROD-APP-AUTH'];
+        const creatorUser = await getUserBySessionToken(sessionToken);
+
+        let creator = ""
+
+        if(creatorUser)
+            creator = creatorUser._id.toString()
+
+        const createdAt = new Date();
+
+        if (!title && !content && !favorite && !color)
+            return res.sendStatus(400);
+      
+        const note = await createNote({
+            title,
+            content,
+            favorite,
+            color,
+            createdAt,
+            creator
+        });
+
+        return res.status(200).json(note).end()
+
+    }catch(error){
+        console.log(error);
+        return res.sendStatus(400)
+
+    }
+} 
 
 export const getAllNotes = async (req: express.Request, res: express.Response) => {
     try {

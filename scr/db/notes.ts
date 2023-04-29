@@ -5,7 +5,8 @@ const NotesSchema = new mongoose.Schema({
     content: { type: String, required: true},
     favorite: { type: Boolean, required: true},
     color: { type: String, required: true},
-    createdAt: { type: Date, required: true}
+    createdAt: { type: Date, required: true},
+    creator: { type: String, required: true}
 })
 
 export const NotesModel = mongoose.model('Note', NotesSchema);

@@ -2,6 +2,7 @@ import express from 'express'
 import { get, merge } from 'lodash';
 
 import { getUserBySessionToken  } from '../db/users';
+import { getNoteById } from '../db/notes';
 
 export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try{
@@ -41,5 +42,33 @@ export const isOwner = async (req: express.Request, res: express.Response, next:
     } catch (error) {
       console.log(error);
       return res.sendStatus(400);
+    }
+}
+
+export const isNoteOwner = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+
+        const { id } = req.params;
+        
+        const sessionToken = req.cookies['PROD-APP-AUTH'];
+        const currentUser = await getUserBySessionToken(sessionToken);
+
+        if (!currentUser) {
+            return res.sendStatus(400);
+        }
+    
+        const note = await getNoteById(id)
+
+        if(!note)
+            return res.sendStatus(400);
+
+        if (currentUser._id.toString() !== note.creator) {
+            return res.sendStatus(403);
+        }
+    
+        next();
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
     }
 }

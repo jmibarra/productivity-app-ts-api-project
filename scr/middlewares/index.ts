@@ -49,6 +49,8 @@ export const isNoteOwner = async (req: express.Request, res: express.Response, n
     try {
 
         const { id } = req.params;
+
+        console.log(id)
         
         const sessionToken = req.cookies['PROD-APP-AUTH'];
         const currentUser = await getUserBySessionToken(sessionToken);

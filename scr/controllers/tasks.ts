@@ -1,10 +1,10 @@
 import express from 'express';
-import { createNote, deleteNoteById, getNoteById, getNotesByCreator } from '../db/notes';
 import { getUserBySessionToken } from '../db/users';
+import { createTask, deleteTaskById, getTasksByCreator, getTaskById } from '../db/tasks'
 
-export const createNewNote = async (req: express.Request, res: express.Response) => {
+export const createNewTask = async (req: express.Request, res: express.Response) => {
     try{
-        const { title, content, favorite, color } = req.body;
+        const { title, description, completed, color, priority, dueDate, list } = req.body;
 
         const sessionToken = req.cookies['PROD-APP-AUTH'];
         const creatorUser = await getUserBySessionToken(sessionToken);
@@ -16,19 +16,24 @@ export const createNewNote = async (req: express.Request, res: express.Response)
 
         const createdAt = new Date();
 
-        if (!title && !content && !favorite && !color)
+        if (!title && !description && !completed && !color && !dueDate && !list)
             return res.sendStatus(400);
       
-        const note = await createNote({
+
+        //Ver como era la quick task que no tiene varios como oblogatios
+        const task = await createTask({
             title,
-            content,
-            favorite,
+            description,
+            completed,
             color,
             createdAt,
-            creator
+            creator,
+            dueDate,
+            priority,
+            list
         });
 
-        return res.status(200).json(note).end()
+        return res.status(200).json(task).end()
 
     }catch(error){
         console.log(error);
@@ -37,7 +42,7 @@ export const createNewNote = async (req: express.Request, res: express.Response)
     }
 } 
 
-export const getAllNotes = async (req: express.Request, res: express.Response) => {
+export const getAllTasks = async (req: express.Request, res: express.Response) => {
     try {
 
         const sessionToken = req.cookies['PROD-APP-AUTH'];
@@ -50,11 +55,11 @@ export const getAllNotes = async (req: express.Request, res: express.Response) =
             return res.sendStatus(400);
 
         creator = creatorUser._id.toString()
-        const notes = await getNotesByCreator(creator);
+        const tasks = await getTasksByCreator(creator);
 
         const responseData = {
-            notes: notes,
-            count: notes.length
+            tasks: tasks,
+            count: tasks.length
         }
         
         return res.status(200).json(responseData);
@@ -65,19 +70,19 @@ export const getAllNotes = async (req: express.Request, res: express.Response) =
     }
 };
 
-export const deleteNote = async (req: express.Request, res: express.Response) => {
+export const deleteTask = async (req: express.Request, res: express.Response) => {
     try {
         const { id } = req.params;
-        const deletedNote = await deleteNoteById(id);
+        const deletedTask = await deleteTaskById(id);
   
-        return res.json(deletedNote);
+        return res.json(deletedTask);
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
     }
 }
 
-export const updateNote = async (req: express.Request, res: express.Response) => {
+export const updateTask = async (req: express.Request, res: express.Response) => {
     try {
       const { id } = req.params;
       const { title, content, favorite, color } = req.body;
@@ -86,20 +91,20 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
             return res.sendStatus(400);
       }
   
-      const note = await getNoteById(id);
+      const task = await getTaskById(id);
 
       // TODO: Fecha de actualización
-      
-      if(note){
-          note.title = title;
-          note.content = content;
-          note.favorite = favorite;
-          note.color = color;
-          await note.save();
+      //TODO: mejorar el esquema de datos que va a viajar
+      if(task){
+        task.title = title;
+        task.description = content;
+        task.completed = favorite;
+        task.color = color;
+          await task.save();
       }else
           return res.sendStatus(404);
       
-      return res.status(200).json(note).end();
+      return res.status(200).json(task).end();
   
     } catch (error) {
       console.log(error);

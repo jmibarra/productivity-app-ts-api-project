@@ -13,7 +13,7 @@ const TasksSchema = new mongoose.Schema({
     //Ver como hacer el array de labels y subtasks
 })
 
-export const TasksModel = mongoose.model('Note', TasksSchema);
+export const TasksModel = mongoose.model('Task', TasksSchema);
 
 export const getTasksByCreator = (creatorId: String) => TasksModel.find({
     'creator': creatorId

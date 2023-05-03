@@ -15,6 +15,7 @@ export const createNewNote = async (req: express.Request, res: express.Response)
             creator = creatorUser._id.toString()
 
         const createdAt = new Date();
+        const updatedAt = new Date();
 
         if (!title && !content && !favorite && !color)
             return res.sendStatus(400);
@@ -25,6 +26,7 @@ export const createNewNote = async (req: express.Request, res: express.Response)
             favorite,
             color,
             createdAt,
+            updatedAt,
             creator
         });
 
@@ -87,14 +89,13 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
       }
   
       const note = await getNoteById(id);
-
-      // TODO: Fecha de actualización
       
       if(note){
           note.title = title;
           note.content = content;
           note.favorite = favorite;
           note.color = color;
+          note.updatedAt = new Date();
           await note.save();
       }else
           return res.sendStatus(404);

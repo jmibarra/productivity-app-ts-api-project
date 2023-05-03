@@ -6,6 +6,7 @@ const NotesSchema = new mongoose.Schema({
     favorite: { type: Boolean, required: true},
     color: { type: String, required: true},
     createdAt: { type: Date, required: true},
+    updatedAt: { type: Date },
     creator: { type: String, required: true}
 })
 

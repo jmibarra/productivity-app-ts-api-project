@@ -13,7 +13,7 @@ export const login = async (req: express.Request, res: express.Response) => {
         const user = await getUserByEmail(email).select('+authentication.salt + authentication.password');
 
         if(!user)
-            return res.sendStatus(400);
+            return res.sendStatus(403);
 
         const expectedHash = authentication(user?.authentication?.salt, password);
 
@@ -25,9 +25,6 @@ export const login = async (req: express.Request, res: express.Response) => {
         user.authentication.sessionToken = authentication(salt, user._id.toString())
 
         await user.save()
-
-        console.log("test")
-        console.log(user)
 
         res.cookie('PROD-APP-AUTH', user.authentication.sessionToken, {domain: 'localhost', path: '/' })
 

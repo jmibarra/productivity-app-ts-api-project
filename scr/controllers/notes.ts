@@ -8,7 +8,7 @@ export const createNewNote = async (req: express.Request, res: express.Response)
 
         const sessionToken = req.cookies['PROD-APP-AUTH'];
         const creatorUser = await getUserBySessionToken(sessionToken);
-
+        
         let creator = ""
 
         if(creatorUser)
@@ -35,7 +35,6 @@ export const createNewNote = async (req: express.Request, res: express.Response)
     }catch(error){
         console.log(error);
         return res.sendStatus(400)
-
     }
 } 
 

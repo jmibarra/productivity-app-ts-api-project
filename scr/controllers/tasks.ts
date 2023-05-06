@@ -1,5 +1,4 @@
 import express from 'express';
-import { getUserBySessionToken } from '../db/users';
 import { createTask, deleteTaskById, getTasksByCreator, getTaskById, getTasksCountByCreator } from '../db/tasks'
 import { get } from 'lodash';
 
@@ -74,10 +73,9 @@ export const deleteTask = async (req: express.Request, res: express.Response) =>
 
 export const updateTask = async (req: express.Request, res: express.Response) => {
     try {
-      const { title, description, completed, color, dueDate, priority, list } = req.body;
+      const { title, description, completed, color, dueDate, priority, list, labels } = req.body;
   
-      if (!title && !description && completed === undefined && !color && !dueDate && !priority && !list) {
-        console.log("entra")
+      if (!title && !description && completed === undefined && !color && !dueDate && !priority && !list && !labels) {
             return res.sendStatus(400);
       }
   
@@ -91,10 +89,24 @@ export const updateTask = async (req: express.Request, res: express.Response) =>
             task.dueDate = dueDate ? dueDate: task.dueDate;
             task.priority = priority ? priority : task.priority;
             task.list = list ? list : task.list;
+            task.labels = labels ? labels : task.labels;
             task.updatedAt = new Date();
             await task.save();
       }else
           return res.sendStatus(404);
+      
+      return res.status(200).json(task).end();
+  
+    } catch (error) {
+      console.log(error);
+      return res.sendStatus(400);
+    }
+}
+
+export const getTask = async (req: express.Request, res: express.Response) => {
+    try {
+
+      const task = req.body.task
       
       return res.status(200).json(task).end();
   

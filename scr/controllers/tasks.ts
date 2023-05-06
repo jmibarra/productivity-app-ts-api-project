@@ -1,6 +1,6 @@
 import express from 'express';
 import { getUserBySessionToken } from '../db/users';
-import { createTask, deleteTaskById, getTasksByCreator, getTaskById } from '../db/tasks'
+import { createTask, deleteTaskById, getTasksByCreator, getTaskById, getTasksCountByCreator } from '../db/tasks'
 import { get } from 'lodash';
 
 export const createNewTask = async (req: express.Request, res: express.Response) => {
@@ -40,13 +40,16 @@ export const createNewTask = async (req: express.Request, res: express.Response)
 
 export const getAllTasks = async (req: express.Request, res: express.Response) => {
     try {
-
         const creator = get(req, 'identity._id') as unknown as string;
-        const tasks = await getTasksByCreator(creator);
+        const limit = parseInt(req.query.limit as string) ?? 10;
+        const page = parseInt(req.query.page as string) ?? 1;
+
+        const totalCount = await getTasksCountByCreator(creator); // Obtener el recuento total de documentos
+        const tasks = await getTasksByCreator(creator, limit, page);
 
         const responseData = {
             tasks: tasks,
-            count: tasks.length
+            count: totalCount
         }
         
         return res.status(200).json(responseData);

@@ -7,8 +7,10 @@ import { getTaskById } from '../db/tasks';
 
 export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try{
+        
         const sessionToken = req.cookies['PROD-APP-AUTH'];
 
+        console.log(sessionToken)
         if(!sessionToken)
             return res.sendStatus(403);
 

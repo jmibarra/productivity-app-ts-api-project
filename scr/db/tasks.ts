@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const TasksSchema = new mongoose.Schema({
     title: { type: String, required: true},
-    description: { type: String, required: true},
+    description: { type: String},
     completed: { type: Boolean, required: true},
-    color: { type: String, required: true},
+    color: { type: String},
     createdAt: { type: Date, required: true},
     updatedAt: { type: Date, required: true},
     creator: { type: String, required: true},
     list: { type: Number, required: true},
     priority: {type: Number},
-    dueDate: { type: Date, required: true},
+    dueDate: { type: Date},
     labels: { type: [String] }
     //Ver como hacer con las subtareas un array de objetos o un listado de ids que luego traigo.
 })

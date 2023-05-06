@@ -50,25 +50,19 @@ export const isNoteOwner = async (req: express.Request, res: express.Response, n
     try {
 
         const { id } = req.params;
-
-        console.log(id)
-        
-        const sessionToken = req.cookies['PROD-APP-AUTH'];
-        const currentUser = await getUserBySessionToken(sessionToken);
-
-        if (!currentUser) {
-            return res.sendStatus(400);
-        }
+        const currentUserId = get(req, 'identity._id') as unknown as string;
     
         const note = await getNoteById(id)
 
         if(!note)
             return res.sendStatus(400);
 
-        if (currentUser._id.toString() !== note.creator) {
+        if (currentUserId.toString() !== note.creator) {
             return res.sendStatus(403);
         }
-    
+
+        req.body.note = note
+
         next();
     } catch (error) {
         console.log(error);
@@ -80,24 +74,18 @@ export const isTaskOwner = async (req: express.Request, res: express.Response, n
     try {
 
         const { id } = req.params;
-        
-        const sessionToken = req.cookies['PROD-APP-AUTH'];
-        const currentUser = await getUserBySessionToken(sessionToken);
-
-        if (!currentUser) {
-            return res.sendStatus(400);
-        }
+        const currentUserId = get(req, 'identity._id') as unknown as string;
     
         const task = await getTaskById(id)
 
         if(!task)
             return res.sendStatus(400);
 
-        if (currentUser._id.toString() !== task.creator) {
+        if (currentUserId.toString() !== task.creator) {
             return res.sendStatus(403);
         }
 
-        req.body.currentTask = task;
+        req.body.task = task
     
         next();
     } catch (error) {

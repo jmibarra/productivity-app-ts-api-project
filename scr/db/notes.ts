@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+interface Note extends Document {
+    title: string;
+    content: string;
+    favorite: boolean;
+    color: string;
+    createdAt: Date;
+    updatedAt?: Date;
+    creator: string;
+}
+
 const NotesSchema = new mongoose.Schema({
     title: { type: String, required: true},
     content: { type: String, required: true},
@@ -10,7 +20,7 @@ const NotesSchema = new mongoose.Schema({
     creator: { type: String, required: true}
 })
 
-export const NotesModel = mongoose.model('Note', NotesSchema);
+export const NotesModel = mongoose.model<Note>('Note', NotesSchema);
 
 export const getNotesByCreator = (creatorId: String) => NotesModel.find({
     'creator': creatorId

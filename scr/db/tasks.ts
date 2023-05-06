@@ -8,7 +8,7 @@ const TasksSchema = new mongoose.Schema({
     createdAt: { type: Date, required: true},
     updatedAt: { type: Date, required: true},
     creator: { type: String, required: true},
-    list: { type: String, required: true},
+    list: { type: Number, required: true},
     priority: {type: Number},
     dueDate: { type: Date, required: true},
     labels: { type: [String] }

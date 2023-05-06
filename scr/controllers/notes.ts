@@ -1,18 +1,12 @@
 import express from 'express';
-import { createNote, deleteNoteById, getNoteById, getNotesByCreator } from '../db/notes';
-import { getUserBySessionToken } from '../db/users';
+import { createNote, deleteNoteById, getNotesByCreator } from '../db/notes';
+import { get } from 'lodash';
 
 export const createNewNote = async (req: express.Request, res: express.Response) => {
     try{
         const { title, content, favorite, color } = req.body;
 
-        const sessionToken = req.cookies['PROD-APP-AUTH'];
-        const creatorUser = await getUserBySessionToken(sessionToken);
-        
-        let creator = ""
-
-        if(creatorUser)
-            creator = creatorUser._id.toString()
+        const creator = get(req, 'identity._id') as unknown as string;
 
         const createdAt = new Date();
         const updatedAt = new Date();
@@ -41,16 +35,8 @@ export const createNewNote = async (req: express.Request, res: express.Response)
 export const getAllNotes = async (req: express.Request, res: express.Response) => {
     try {
 
-        const sessionToken = req.cookies['PROD-APP-AUTH'];
+        const creator = get(req, 'identity._id') as unknown as string;
 
-        const creatorUser = await getUserBySessionToken(sessionToken);
-
-        let creator = ""
-
-        if(!creatorUser)
-            return res.sendStatus(400);
-
-        creator = creatorUser._id.toString()
         const notes = await getNotesByCreator(creator);
 
         const responseData = {
@@ -87,7 +73,7 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
             return res.sendStatus(400);
       }
   
-      const note = await getNoteById(id);
+      const note = req.body.note
       
       if(note){
           note.title = title;
@@ -102,7 +88,7 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
       return res.status(200).json(note).end();
   
     } catch (error) {
-      console.log(error);
-      return res.sendStatus(400);
+        console.log(error);
+        return res.sendStatus(400);
     }
 }

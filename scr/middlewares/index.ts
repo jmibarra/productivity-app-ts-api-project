@@ -3,6 +3,7 @@ import { get, merge } from 'lodash';
 
 import { getUserBySessionToken  } from '../db/users';
 import { getNoteById } from '../db/notes';
+import { getTaskById } from '../db/tasks';
 
 export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try{
@@ -67,6 +68,36 @@ export const isNoteOwner = async (req: express.Request, res: express.Response, n
         if (currentUser._id.toString() !== note.creator) {
             return res.sendStatus(403);
         }
+    
+        next();
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+}
+
+export const isTaskOwner = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+
+        const { id } = req.params;
+        
+        const sessionToken = req.cookies['PROD-APP-AUTH'];
+        const currentUser = await getUserBySessionToken(sessionToken);
+
+        if (!currentUser) {
+            return res.sendStatus(400);
+        }
+    
+        const task = await getTaskById(id)
+
+        if(!task)
+            return res.sendStatus(400);
+
+        if (currentUser._id.toString() !== task.creator) {
+            return res.sendStatus(403);
+        }
+
+        req.body.currentTask = task;
     
         next();
     } catch (error) {

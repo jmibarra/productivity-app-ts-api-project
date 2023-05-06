@@ -15,6 +15,7 @@ export const createNewTask = async (req: express.Request, res: express.Response)
             creator = creatorUser._id.toString()
 
         const createdAt = new Date();
+        const updatedAt = new Date();
 
         if (!title && !description && !completed && !color && !dueDate && !list)
             return res.sendStatus(400);
@@ -27,6 +28,7 @@ export const createNewTask = async (req: express.Request, res: express.Response)
             completed,
             color,
             createdAt,
+            updatedAt,
             creator,
             dueDate,
             priority,
@@ -93,14 +95,13 @@ export const updateTask = async (req: express.Request, res: express.Response) =>
   
       const task = await getTaskById(id);
 
-      // TODO: Fecha de actualización
-      //TODO: mejorar el esquema de datos que va a viajar
       if(task){
-        task.title = title;
-        task.description = content;
-        task.completed = favorite;
-        task.color = color;
-          await task.save();
+            task.title = title;
+            task.description = content;
+            task.completed = favorite;
+            task.color = color;
+            task.updatedAt = new Date();
+            await task.save();
       }else
           return res.sendStatus(404);
       
@@ -110,4 +111,25 @@ export const updateTask = async (req: express.Request, res: express.Response) =>
       console.log(error);
       return res.sendStatus(400);
     }
+}
+
+export const updateCompleted =async (req: express.Request, res: express.Response) => {
+    try {
+
+        const { id } = req.params;
+        const { completed,task} = req.body;// Buscar la tarea por su ID
+      
+        if (!task) {
+            return res.sendStatus(404); // Si no se encuentra la tarea, lanzar un error
+        }
+      
+        task.completed = completed; // Actualizar la propiedad "completed"
+        
+        await task.save(); // Guardar los cambios
+
+        return res.status(200).json(task).end();
+      
+      } catch (error) {
+            return res.sendStatus(400);
+      }
 }

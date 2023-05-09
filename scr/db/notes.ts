@@ -22,9 +22,20 @@ const NotesSchema = new mongoose.Schema({
 
 export const NotesModel = mongoose.model<Note>('Note', NotesSchema);
 
-export const getNotesByCreator = (creatorId: String) => NotesModel.find({
-    'creator': creatorId
-});
+export const getNotesByCreator = (creatorId: string, limit: number, page: number) => {
+    const skipCount = (page - 1) * limit; // Calcular la cantidad de documentos que se deben omitir para la paginación
+
+    return NotesModel.find({
+        'creator': creatorId
+    })
+    .skip(skipCount) // Omitir los documentos según el cálculo anterior
+    .limit(limit); // Limitar la cantidad de documentos devueltos por página
+};
+export const getNotesCountByCreator = (creatorId: string) => {
+    return NotesModel.countDocuments({
+        'creator': creatorId
+    });
+};
 export const getNoteById = (id: string) => NotesModel.findById(id);
 export const createNote = (values: Record<string, any>) => new NotesModel(values).save().then((note) => note.toObject());
 export const deleteNoteById = (id: String) => NotesModel.findOneAndDelete({_id: id});

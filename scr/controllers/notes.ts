@@ -1,5 +1,5 @@
 import express from 'express';
-import { createNote, deleteNoteById, getNotesByCreator } from '../db/notes';
+import { createNote, deleteNoteById, getNotesByCreator, getNotesCountByCreator } from '../db/notes';
 import { get } from 'lodash';
 
 export const createNewNote = async (req: express.Request, res: express.Response) => {
@@ -37,11 +37,15 @@ export const getAllNotes = async (req: express.Request, res: express.Response) =
 
         const creator = get(req, 'identity._id') as unknown as string;
 
-        const notes = await getNotesByCreator(creator);
+        const limit = parseInt(req.query.limit as string) ?? 10;
+        const page = parseInt(req.query.page as string) ?? 1;
+
+        const totalCount = await getNotesCountByCreator(creator); // Obtener el recuento total de documentos
+        const notes = await getNotesByCreator(creator, limit, page);
 
         const responseData = {
             notes: notes,
-            count: notes.length
+            count: totalCount
         }
         
         return res.status(200).json(responseData);

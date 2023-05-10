@@ -17,7 +17,8 @@ const NotesSchema = new mongoose.Schema({
     color: { type: String, required: true},
     createdAt: { type: Date, required: true},
     updatedAt: { type: Date },
-    creator: { type: String, required: true}
+    creator: { type: String, required: true},
+    labels: { type: [String] }
 })
 
 export const NotesModel = mongoose.model<Note>('Note', NotesSchema);

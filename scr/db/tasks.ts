@@ -22,7 +22,7 @@ export const getTasksByCreator = (creatorId: string, limit: number, page: number
 
     return TasksModel.find({
         'creator': creatorId
-    })
+    }).sort({ createdAt: -1 }) // Ordenar los documentos por fecha de creación descendente
     .skip(skipCount) // Omitir los documentos según el cálculo anterior
     .limit(limit); // Limitar la cantidad de documentos devueltos por página
 };

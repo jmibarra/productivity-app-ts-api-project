@@ -28,7 +28,7 @@ export const getNotesByCreator = (creatorId: string, limit: number, page: number
 
     return NotesModel.find({
         'creator': creatorId
-    })
+    }).sort({ createdAt: -1 })
     .skip(skipCount) // Omitir los documentos según el cálculo anterior
     .limit(limit); // Limitar la cantidad de documentos devueltos por página
 };

@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 export const createNewTask = async (req: express.Request, res: express.Response) => {
     try{
-        const { title, description, completed, color, priority, dueDate, list } = req.body;
+        const { title, description, completed, color, priority, dueDate, list, labels } = req.body;
 
         const creator = get(req, 'identity._id') as unknown as string;
 
@@ -25,7 +25,8 @@ export const createNewTask = async (req: express.Request, res: express.Response)
             creator,
             dueDate,
             priority,
-            list
+            list,
+            labels
         });
 
         return res.status(200).json(task).end()

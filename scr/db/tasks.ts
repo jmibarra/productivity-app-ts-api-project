@@ -17,12 +17,12 @@ const TasksSchema = new mongoose.Schema({
 
 export const TasksModel = mongoose.model('Task', TasksSchema);
 
-export const getTasksByCreator = (creatorId: string, limit: number, page: number) => {
+export const getTasksByCreator = (creatorId: string, limit: number, page: number, sortBy: string) => {
     const skipCount = (page - 1) * limit; // Calcular la cantidad de documentos que se deben omitir para la paginación
-
+    console.log(sortBy)
     return TasksModel.find({
         'creator': creatorId
-    }).sort({ createdAt: -1 }) // Ordenar los documentos por fecha de creación descendente
+    }).sort({ [sortBy]: 1 })
     .skip(skipCount) // Omitir los documentos según el cálculo anterior
     .limit(limit); // Limitar la cantidad de documentos devueltos por página
 };

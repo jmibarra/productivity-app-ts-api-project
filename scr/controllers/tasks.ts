@@ -43,9 +43,10 @@ export const getAllTasks = async (req: express.Request, res: express.Response) =
         const creator = get(req, 'identity._id') as unknown as string;
         const limit = parseInt(req.query.limit as string) ?? 10;
         const page = parseInt(req.query.page as string) ?? 1;
+        const sortBy = req.query.sortBy as string === '' ? 'createdAt' : req.query.sortBy as string;
 
         const totalCount = await getTasksCountByCreator(creator); // Obtener el recuento total de documentos
-        const tasks = await getTasksByCreator(creator, limit, page);
+        const tasks = await getTasksByCreator(creator, limit, page, sortBy);
 
         const responseData = {
             tasks: tasks,

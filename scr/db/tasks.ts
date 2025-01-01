@@ -17,6 +17,15 @@ const TasksSchema = new mongoose.Schema({
 
 export const TasksModel = mongoose.model('Task', TasksSchema);
 
+/**
+ * Get the tasks of a given creator, with pagination and sorting.
+ * @param {string} creatorId - The id of the creator of the tasks.
+ * @param {number} limit - The number of tasks to return per page.
+ * @param {number} page - The page number of the tasks to return.
+ * @param {string} sortBy - The field to sort the tasks by.
+ * @param {SortOrder} sortDirection - The direction of the sort.
+ * @returns {Promise<Document[]>} - The tasks of the given creator, sorted by the given field and direction.
+ */
 export const getTasksByCreator = (creatorId: string, limit: number, page: number, sortBy: string, sortDirection: SortOrder) => {
     const skipCount = (page - 1) * limit; // Calcular la cantidad de documentos que se deben omitir para la paginación
     return TasksModel.find({

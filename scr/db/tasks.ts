@@ -38,6 +38,11 @@ export const getTasksByCreator = (creatorId: string, limit: number, page: number
     .limit(limit); // Limitar la cantidad de documentos devueltos por página
 };
 
+/**
+ * Gets the count of tasks for a given creator.
+ * @param {string} creatorId - The id of the creator of the tasks.
+ * @returns {Promise<number>} - The count of tasks for the given creator.
+ */
 export const getTasksCountByCreator = (creatorId: string) => {
     return TasksModel.countDocuments({
         'creator': creatorId

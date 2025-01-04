@@ -8,9 +8,6 @@ export const createNewTask = async (req: express.Request, res: express.Response)
 
         const creator = get(req, 'identity._id') as unknown as string;
 
-        const createdAt = new Date();
-        const updatedAt = new Date();
-
         if (!title && !description && !completed && !color && !dueDate && !priority)
             return res.sendStatus(400);
 
@@ -20,8 +17,6 @@ export const createNewTask = async (req: express.Request, res: express.Response)
             description,
             completed,
             color,
-            createdAt,
-            updatedAt,
             creator,
             dueDate,
             priority,
@@ -93,7 +88,6 @@ export const updateTask = async (req: express.Request, res: express.Response) =>
             task.priority = priority ? priority : task.priority;
             task.list = list ? list : task.list;
             task.labels = labels ? labels : task.labels;
-            task.updatedAt = new Date();
             await task.save();
       }else
           return res.sendStatus(404);

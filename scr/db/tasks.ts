@@ -5,15 +5,18 @@ const TasksSchema = new mongoose.Schema({
     description: { type: String},
     completed: { type: Boolean, required: true},
     color: { type: String},
-    createdAt: { type: Date, required: true},
-    updatedAt: { type: Date, required: true},
+    createdAt: { type: Date},
+    updatedAt: { type: Date},
     creator: { type: String, required: true},
     list: { type: Number, required: true},
     priority: {type: Number},
     dueDate: { type: Date},
-    labels: { type: [String] }
+    labels: { type: [String] },
+    
     //Ver como hacer con las subtareas un array de objetos o un listado de ids que luego traigo.
-})
+},
+{ timestamps: true } // timestamps automáticamente gestiona createdAt y updatedAt
+);
 
 export const TasksModel = mongoose.model('Task', TasksSchema);
 

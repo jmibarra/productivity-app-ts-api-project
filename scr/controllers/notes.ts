@@ -8,9 +8,6 @@ export const createNewNote = async (req: express.Request, res: express.Response)
 
         const creator = get(req, 'identity._id') as unknown as string;
 
-        const createdAt = new Date();
-        const updatedAt = new Date();
-
         if (!title && !content && !favorite && !color)
             return res.sendStatus(400);
       
@@ -19,8 +16,6 @@ export const createNewNote = async (req: express.Request, res: express.Response)
             content,
             favorite,
             color,
-            createdAt,
-            updatedAt,
             creator,
             labels
         });

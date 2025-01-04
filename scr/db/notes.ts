@@ -15,11 +15,13 @@ const NotesSchema = new mongoose.Schema({
     content: { type: String, required: true},
     favorite: { type: Boolean, required: true},
     color: { type: String, required: true},
-    createdAt: { type: Date, required: true},
+    createdAt: { type: Date},
     updatedAt: { type: Date },
     creator: { type: String, required: true},
     labels: { type: [String] }
-})
+},
+{ timestamps: true } // timestamps automáticamente gestiona createdAt y updatedAt
+);
 
 export const NotesModel = mongoose.model<Note>('Note', NotesSchema);
 

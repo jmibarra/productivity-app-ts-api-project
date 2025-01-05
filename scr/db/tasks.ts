@@ -50,6 +50,6 @@ export const getTasksCountByCreator = (creatorId: string) => {
 };
 
 export const getTaskById = (id: string) => TasksModel.findById(id);
-export const createTask = (values: Record<string, any>) => new TasksModel(values).save().then((note) => note.toObject());
+export const createTask = (values: Record<string, any>) => new TasksModel(values).save().then((task) => task.toObject());
 export const deleteTaskById = (id: String) => TasksModel.findOneAndDelete({_id: id});
 export const updateTaskById = ((id: String, values: Record<string, any>) => TasksModel.findByIdAndUpdate(id, values));

@@ -33,4 +33,24 @@ const HabitSchema: Schema = new Schema<Habit & Document>(
   { timestamps: true } // timestamps automáticamente gestiona created_at y updated_at
 );
 
-export default mongoose.model<Habit & Document>("Habit", HabitSchema);
+export const HabitModel = mongoose.model<Habit & Document>("Habit", HabitSchema);
+
+export const getHabitByCreator = (creatorId: string, limit: number, page: number) => {
+    const skipCount = (page - 1) * limit;
+    return HabitModel.find({
+        "creator": creatorId
+    })
+        .skip(skipCount)
+        .limit(limit);
+};
+
+export const getHabitCountByCreator = (creatorId: string) => {
+    return HabitModel.countDocuments({
+        "creator": creatorId
+    });
+};
+
+export const getHabitById = (id: string) => HabitModel.findById(id);
+export const createHabit = (values: Record<string, any>) => new HabitModel(values).save().then((habit) => habit.toObject());
+export const deleteHabitById = (id: String) => HabitModel.findOneAndDelete({ _id: id });
+export const updateHabitById = (id: String, values: Record<string, any>) => HabitModel.findByIdAndUpdate(id, values);

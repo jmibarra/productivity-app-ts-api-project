@@ -35,16 +35,16 @@ const HabitSchema: Schema = new Schema<Habit & Document>(
 
 export const HabitModel = mongoose.model<Habit & Document>("Habit", HabitSchema);
 
-export const getHabitByCreator = (creatorId: string, limit: number, page: number) => {
+export const getHabitsByCreator = (creatorId: string, limit: number, page: number) => {
     const skipCount = (page - 1) * limit;
     return HabitModel.find({
-        "creator": creatorId
+        "user_id": creatorId
     })
         .skip(skipCount)
         .limit(limit);
 };
 
-export const getHabitCountByCreator = (creatorId: string) => {
+export const getHabitsCountByCreator = (creatorId: string) => {
     return HabitModel.countDocuments({
         "creator": creatorId
     });

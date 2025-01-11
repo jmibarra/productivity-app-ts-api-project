@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuthenticated } from "../middlewares";
-import { createNewTask, deleteTask, getAllTasks, getTask, updateTask } from "../controllers/tasks";
+import { createNewTask, deleteTask, getAllTasks, getTask, updateTask } from "../controllers/tasks/tasks";
 import { isTaskOwner } from "../middlewares/tasks";
 
 export default (router: express.Router) => {

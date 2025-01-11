@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTask, deleteTaskById, getTasksByCreator, getTaskById, getTasksCountByCreator } from '../db/tasks'
+import { createTask, deleteTaskById, getTasksByCreator, getTasksCountByCreator } from '../db/tasks/tasks'
 import { get } from 'lodash';
 
 export const createNewTask = async (req: express.Request, res: express.Response) => {

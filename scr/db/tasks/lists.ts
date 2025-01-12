@@ -5,7 +5,7 @@ const ListSchema = new mongoose.Schema({
     icon: { type: String},
     color: { type: String},
     creator: { type: String, required: true},
-    order: { type: Number, required: true},
+    order: { type: Number},
 },
 { timestamps: true } // timestamps automáticamente gestiona createdAt y updatedAt
 );

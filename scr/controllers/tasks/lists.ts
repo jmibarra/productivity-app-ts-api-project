@@ -38,9 +38,10 @@ export const getAllLists = async (req: express.Request, res: express.Response) =
     }
 }
 
-export const deleteTask = async (req: express.Request, res: express.Response) => {
+export const deleteList = async (req: express.Request, res: express.Response) => {
     try {
         const { id } = req.params;
+        console.log(id)
         const deletedTask = await deleteListById(id);
   
         return res.json(deletedTask);

@@ -10,12 +10,12 @@ export const createNewList = async (req: express.Request, res: express.Response)
         if (!name)
             return res.sendStatus(400);
 
-        let finalOrder = await getNextListOrder(creator);
+        let order = await getNextListOrder(creator);
         const list = await createList({
             name,
             icon,
             color,
-            finalOrder,
+            order,
             creator
         });
 

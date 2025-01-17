@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTask, deleteTaskById, getTasksByCreator, getTasksCountByCreator } from '../../db/tasks/tasks'
+import { createTask, deleteTaskById, getTaskCountByCreatorAndList, getTasksByCreator, getTasksByCreatorAndList, getTasksCountByCreator } from '../../db/tasks/tasks'
 import { get } from 'lodash';
 
 export const createNewTask = async (req: express.Request, res: express.Response) => {
@@ -43,6 +43,31 @@ export const getAllTasks = async (req: express.Request, res: express.Response) =
 
         const totalCount = await getTasksCountByCreator(creator); // Obtener el recuento total de documentos
         const tasks = await getTasksByCreator(creator, limit, page, sortBy, sortDirection);
+
+        const responseData = {
+            tasks: tasks,
+            count: totalCount
+        }
+        
+        return res.status(200).json(responseData);
+
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+};
+
+export const getAllListTasks = async (req: express.Request, res: express.Response) => {
+    try {
+        const creator = get(req, 'identity._id') as unknown as string;
+        const { listId } = req.params;
+        const limit = parseInt(req.query.limit as string) ?? 10;
+        const page = parseInt(req.query.page as string) ?? 1;
+        const sortBy = req.query.sortBy as string === '' ? 'createdAt' : req.query.sortBy as string;
+        const sortDirection = req.query.sortDirection as string === 'asc' ? 1 : -1;
+
+        const totalCount = await getTaskCountByCreatorAndList(creator, listId) // Obtener el recuento total de documentos
+        const tasks = await getTasksByCreatorAndList(creator, listId, limit, page, sortBy, sortDirection);
 
         const responseData = {
             tasks: tasks,

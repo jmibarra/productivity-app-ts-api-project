@@ -7,7 +7,7 @@ export const createNewHabit = async (req: express.Request, res: express.Response
         const { name, description, icon, goal, frequency } = req.body;
         const creator = get(req, 'identity._id') as unknown as string;
 
-        if (!name && !description && !icon && !goal && !frequency) {
+        if (!name && !icon && !goal && !frequency) {
             return res.sendStatus(400);
         }
 

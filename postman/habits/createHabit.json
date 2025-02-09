@@ -1,0 +1,50 @@
+//Frecuencia diaria
+{
+  "user_id": "usuario123",
+  "name": "Meditar",
+  "goal": {
+    "type": "daily",
+    "target": 1
+  },
+  "frequency": {
+    "type": "daily",
+    "details": {
+      "days_of_week": ["monday", "wednesday", "friday"]
+    }
+  }
+}
+
+//Frecuencia semanal
+{
+    "user_id": "usuario123",
+    "name": "Correr",
+    "description": "5 km por sesión",
+    "goal": {
+      "type": "quantity",
+      "target": 3
+    },
+    "frequency": {
+      "type": "weekly",
+      "details": {
+        "weekly_target": 4
+      }
+    }
+  }
+
+//Intervalos
+
+  {
+    "user_id": "usuario123",
+    "name": "Regar plantas",
+    "icon": "plant",
+    "goal": {
+      "type": "daily",
+      "target": 1
+    },
+    "frequency": {
+      "type": "interval",
+      "details": {
+        "interval_days": 3
+      }
+    }
+  }

@@ -13,7 +13,7 @@ export const isHabitOwner = async (req: express.Request, res: express.Response, 
         if(!habit)
             return res.sendStatus(400);
 
-        if (currentUserId.toString() !== habit.user_id.toString()) {
+        if (currentUserId.toString() !== habit.creator.toString()) {
             return res.sendStatus(403);
         }
 

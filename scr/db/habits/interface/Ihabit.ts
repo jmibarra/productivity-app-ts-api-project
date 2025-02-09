@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 
 export interface Habit {
   _id?: ObjectId;
-  user_id: string; // ID del usuario
+  creator: string; // ID del usuario
   name: string; // Nombre del hábito
   description?: string; // Descripción opcional
   icon?: string; // Identificador del icono

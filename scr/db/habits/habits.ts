@@ -3,7 +3,7 @@ import { Habit } from "./interface/Ihabit";
 
 const HabitSchema: Schema = new Schema<Habit & Document>(
   {
-    user_id: { type: String, required: true },
+    creator: { type: String, required: true },
     name: { type: String, required: true },
     description: { type: String },
     icon: { type: String, required: true },
@@ -38,7 +38,7 @@ export const HabitModel = mongoose.model<Habit & Document>("Habit", HabitSchema)
 export const getHabitsByCreator = (creatorId: string, limit: number, page: number) => {
     const skipCount = (page - 1) * limit;
     return HabitModel.find({
-        "user_id": creatorId
+        "creator": creatorId
     })
         .skip(skipCount)
         .limit(limit);

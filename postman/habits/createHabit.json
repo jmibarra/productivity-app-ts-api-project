@@ -1,7 +1,8 @@
 //Frecuencia diaria
 {
-  "user_id": "usuario123",
+  "creator": "usuario123",
   "name": "Meditar",
+  "icon": "Zen",
   "goal": {
     "type": "daily",
     "target": 1
@@ -16,8 +17,9 @@
 
 //Frecuencia semanal
 {
-    "user_id": "usuario123",
+    "creator": "usuario123",
     "name": "Correr",
+    "icon": "runner",
     "description": "5 km por sesión",
     "goal": {
       "type": "quantity",
@@ -34,7 +36,7 @@
 //Intervalos
 
   {
-    "user_id": "usuario123",
+    "creator": "usuario123",
     "name": "Regar plantas",
     "icon": "plant",
     "goal": {

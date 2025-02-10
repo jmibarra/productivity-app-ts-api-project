@@ -75,6 +75,12 @@ export const deleteHabitRecordById = (id: string) => HabitRecordModel.findOneAnd
 
 export const updateHabitRecordById = (id: string, values: Record<string, any>) => HabitRecordModel.findByIdAndUpdate(id, values);
 
+/**
+ * Gets a habit record by its habit id and date.
+ * @param {string} habitId - The id of the habit to which the record belongs.
+ * @param {Date} date - The date of the record.
+ * @returns {Promise<Document>} - The habit record with the given habit id and date.
+ */
 export const getHabitRecordByHabitIdAndDate = (habitId: string, date: Date) => {
   return HabitRecordModel.findOne({
     "habit_id": habitId,
@@ -82,6 +88,13 @@ export const getHabitRecordByHabitIdAndDate = (habitId: string, date: Date) => {
   });
 };
 
+/**
+ * Gets habit records by its habit id and date range.
+ * @param {string} habitId - The id of the habit to which the records belong.
+ * @param {Date} startDate - The start date of the range.
+ * @param {Date} endDate - The end date of the range.
+ * @returns {Promise<Document[]>} - The habit records with the given habit id and date range.
+ */
 export const getHabitRecordByHabitIdAndDateRange = (habitId: string, startDate: Date, endDate: Date) => {
   return HabitRecordModel.find({
     "habit_id": habitId,

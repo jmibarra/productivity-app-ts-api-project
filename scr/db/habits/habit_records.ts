@@ -75,4 +75,18 @@ export const deleteHabitRecordById = (id: string) => HabitRecordModel.findOneAnd
 
 export const updateHabitRecordById = (id: string, values: Record<string, any>) => HabitRecordModel.findByIdAndUpdate(id, values);
 
+export const getHabitRecordByHabitIdAndDate = (habitId: string, date: Date) => {
+  return HabitRecordModel.findOne({
+    "habit_id": habitId,
+    "date": date
+  });
+};
+
+export const getHabitRecordByHabitIdAndDateRange = (habitId: string, startDate: Date, endDate: Date) => {
+  return HabitRecordModel.find({
+    "habit_id": habitId,
+    "date": { $gte: startDate, $lte: endDate }
+  });
+};
+
 

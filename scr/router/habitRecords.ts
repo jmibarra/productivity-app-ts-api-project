@@ -5,5 +5,5 @@ import { createNewHabitRecord, getHabitRecordDateRange } from "../controllers/ha
 
 export default (router: express.Router) => {
     router.post('/habit-records', isAuthenticated, isHabitOwner, createNewHabitRecord);
-    router.get('/habit-records/:habitId/', isAuthenticated, isHabitOwner, getHabitRecordDateRange);
+    router.get('/habit-records/:habitId/range', isAuthenticated, isHabitOwner, getHabitRecordDateRange);
 }

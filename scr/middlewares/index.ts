@@ -6,10 +6,8 @@ import { getNoteById } from '../db/notes';
 
 export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try{
-        
         const sessionToken = req.cookies['PROD-APP-AUTH'];
 
-        console.log(sessionToken)
         if(!sessionToken)
             return res.sendStatus(403);
 

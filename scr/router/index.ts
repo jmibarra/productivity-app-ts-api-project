@@ -6,6 +6,7 @@ import notes from './notes';
 import tasks from './tasks';
 import habits from './habits';
 import lists from './lists';
+import habitRecords from './habitRecords';
 
 
 const router = express.Router();
@@ -17,6 +18,7 @@ export default (): express.Router => {
     tasks(router);
     habits(router);
     lists(router);
+    habitRecords(router);
     
     return router;
 }

@@ -1,18 +1,21 @@
 import express from 'express';
 import { get } from 'lodash';
 import { createHabitRecord, getHabitRecordByHabitIdAndDateRange } from '../db/habits/habit_records';
+import { convertirFecha } from '../helpers';
 
 export const createNewHabitRecord = async (req: express.Request, res: express.Response) => {
     try {
-        const { habitId, date, progress, notes } = req.body;
+        const { date, progress, notes } = req.body;
+
+        const habit = req.body.habit
         const creator = get(req, 'identity._id') as unknown as string;
 
-        if (!habitId && !date && !progress) {
+        if ( !date && !progress) {
             return res.sendStatus(400);
         }
 
-        const habit = await createHabitRecord({ habitId, date, progress, notes, creator });
-        return res.status(200).json(habit).end();
+        const habitRecord = await createHabitRecord({ habit_id: habit._id, date, progress, notes, creator });
+        return res.status(200).json(habitRecord).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
@@ -21,12 +24,12 @@ export const createNewHabitRecord = async (req: express.Request, res: express.Re
 
 export const getHabitRecordDateRange = async (req: express.Request, res: express.Response) => {
     try {
-        const habitId = req.params.habitId;
-        const startDate = req.params.startDate;
-        const endDate = req.params.endDate;
+        const habit = req.body.habit
+        const startDate = convertirFecha(req.params.startDate);
+        const endDate = convertirFecha(req.params.endDate);
 
-        const habitRecord = await getHabitRecordByHabitIdAndDateRange(habitId, startDate as unknown as Date, endDate as unknown as Date);
-        return res.status(200).json(habitRecord).end();
+        const habitRecords = await getHabitRecordByHabitIdAndDateRange(habit._id, startDate, endDate);
+        return res.status(200).json(habitRecords).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);

@@ -1,7 +1,6 @@
 import express from 'express';
 import { get } from 'lodash';
 import { createHabitRecord, getHabitRecordByHabitIdAndDateRange } from '../db/habits/habit_records';
-import { convertirFecha } from '../helpers';
 
 export const createNewHabitRecord = async (req: express.Request, res: express.Response) => {
     try {
@@ -25,8 +24,8 @@ export const createNewHabitRecord = async (req: express.Request, res: express.Re
 export const getHabitRecordDateRange = async (req: express.Request, res: express.Response) => {
     try {
         const habit = req.body.habit
-        const startDate = convertirFecha(req.params.startDate);
-        const endDate = convertirFecha(req.params.endDate);
+        const startDate = new Date(req.params.startDate);
+        const endDate = new Date(req.params.endDate);
 
         const habitRecords = await getHabitRecordByHabitIdAndDateRange(habit._id, startDate, endDate);
         return res.status(200).json(habitRecords).end();

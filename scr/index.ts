@@ -11,9 +11,12 @@ import router from './router';
 const app = express();
 
 app.use(cors({
-    origin: '*',
+    origin: (origin, callback) => {
+        callback(null, true); // Permite cualquier origen
+    },
     credentials: true,
 }));
+
 
 app.use(compression());
 app.use(cookieParser());

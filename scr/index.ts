@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import 'dotenv/config';
 
 import { properties } from './properties';
 import router from './router';
@@ -26,8 +27,15 @@ server.listen(8080, () => {
     console.log('Server running on  http://localhost:8080')
 })
 
+const databaseUrl = process.env.MONGO_URL;
+
+if (!databaseUrl) {
+    console.error('MongoDB URL not found');
+    process.exit(1);
+}
+
 mongoose.Promise = Promise;
-mongoose.connect(properties.mongo_url);
+mongoose.connect(databaseUrl);
 mongoose.connection.on('error', (error: Error) => console.log(error));
 
 app.use('/', router())

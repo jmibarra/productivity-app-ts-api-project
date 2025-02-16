@@ -11,7 +11,7 @@ import router from './router';
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: '*',
     credentials: true,
 }));
 
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 
 server.listen(8080, () => {
-    console.log('Server running on  http://localhost:8080')
+    console.log('Server running')
 })
 
 const databaseUrl = process.env.MONGO_URL;
@@ -37,5 +37,3 @@ mongoose.connect(databaseUrl);
 mongoose.connection.on('error', (error: Error) => console.log(error));
 
 app.use('/', router())
-
-//https://www.youtube.com/watch?v=b8ZUb_Okxro

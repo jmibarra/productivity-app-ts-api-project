@@ -26,7 +26,12 @@ export const login = async (req: express.Request, res: express.Response) => {
 
         await user.save()
 
-        res.cookie('PROD-APP-AUTH', user.authentication.sessionToken, {domain: 'localhost', path: '/' })
+        res.cookie("PROD-APP-AUTH", user.authentication.sessionToken, {
+            httpOnly: true,    // Evita acceso desde JS
+            secure: true,      // Solo en HTTPS
+            sameSite: "none",  // Permite cookies entre diferentes dominios
+            maxAge: 24 * 60 * 60 * 1000, // 1 día
+        });
 
         return res.status(200).json(user).end()
 

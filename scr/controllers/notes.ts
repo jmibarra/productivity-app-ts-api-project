@@ -71,7 +71,6 @@ export const updateNote = async (req: express.Request, res: express.Response) =>
       
         const note = req.body.note
       
-        console.log(note)
         if(note){
             note.title = title ? title : note.title;
             note.content = content ? content : note.content;

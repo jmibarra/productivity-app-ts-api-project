@@ -26,9 +26,7 @@ export const getHabitRecordDateRange = async (req: express.Request, res: express
         const habit = req.body.habit
         const startDate = new Date(req.params.startDate);
         const endDate = new Date(req.params.endDate);
-        console.log(habit._id);
         const habitRecords = await getHabitRecordByHabitIdAndDateRange(habit._id, startDate, endDate);
-        console.log(habitRecords);
         return res.status(200).json(habitRecords).end();
     } catch (error) {
         console.log(error);

@@ -1,6 +1,6 @@
 import express from 'express';
 import { get } from 'lodash';
-import { createHabitRecord, getHabitRecordByHabitIdAndDateRange } from '../db/habits/habit_records';
+import { createHabitRecord, getHabitRecordByHabitIdAndDateRange, updateHabitRecordById } from '../db/habits/habit_records';
 
 export const createNewHabitRecord = async (req: express.Request, res: express.Response) => {
     try {
@@ -28,6 +28,28 @@ export const getHabitRecordDateRange = async (req: express.Request, res: express
         const endDate = new Date(req.params.endDate);
         const habitRecords = await getHabitRecordByHabitIdAndDateRange(habit._id, startDate, endDate);
         return res.status(200).json(habitRecords).end();
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+}
+
+export const updateHabitRecord = async (req: express.Request, res: express.Response) => {
+    try {
+        const { id } = req.params;
+        const {habitRecordId} = req.params;
+        const { date, progress, notes } = req.body;
+
+        if ( !date && !progress) {
+            return res.sendStatus(400);
+        }
+
+        
+
+        const habitRecord = await updateHabitRecordById(habitRecordId, { date, progress, notes });
+
+        console.log(habitRecord);
+        return res.status(200).json(habitRecord).end();
     } catch (error) {
         console.log(error);
         return res.sendStatus(400);
